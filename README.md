@@ -17,8 +17,7 @@ The form data is submitted to a **Google Apps Script Web App backend**, which ca
 
 ## 🚀 Live Demo
 
-👉 [Click here to view the live form]([https://vishaprojects2025-lang.github.io/light-purchase-form/])  
-_(Replace with your actual GitHub Pages URL)_
+👉 [Click here to view the live form](https://vishaprojects2025-lang.github.io/light-purchase-form/)  
 
 ---
 
