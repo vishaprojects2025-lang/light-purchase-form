@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Light Purchase Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #e0eafc, #cfdef3);
+      margin: 0;
+      padding: 40px 20px;
+    }
+
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 450px;
+      margin: auto;
+      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #333;
+    }
+
+    label {
+      font-weight: 600;
+      margin-top: 15px;
+      display: block;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px 14px;
+      margin-top: 8px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    input:focus, select:focus {
+      border-color: #007bff;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+    }
+
+    button {
+      background: #007bff;
+      color: white;
+      padding: 14px;
+      border: none;
+      margin-top: 25px;
+      width: 100%;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .icon-label i {
+      margin-right: 8px;
+      color: #007bff;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2><i class="fas fa-lightbulb"></i> Light Purchase Entry</h2>
+
+    <form id="lightForm">
+      <div class="form-group">
+        <label for="customer" class="icon-label"><i class="fas fa-user"></i> Customer Name:</label>
+        <input type="text" id="customer" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email" class="icon-label"><i class="fas fa-envelope"></i> Customer Email:</label>
+        <input type="email" id="email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="lightType" class="icon-label"><i class="fas fa-lightbulb"></i> Type of Light:</label>
+        <select id="lightType">
+          <option value="LED Bulb">LED Bulb</option>
+          <option value="Tube Light">Tube Light</option>
+          <option value="Panel Light">Panel Light</option>
+          <option value="Chandelier">Chandelier</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="quantity" class="icon-label"><i class="fas fa-sort-numeric-up"></i> Quantity:</label>
+        <input type="number" id="quantity" required>
+      </div>
+
+      <div class="form-group">
+        <label for="price" class="icon-label"><i class="fas fa-rupee-sign"></i> Price per Unit (₹):</label>
+        <input type="number" id="price" required>
+      </div>
+
+      <div class="form-group">
+        <label for="total" class="icon-label"><i class="fas fa-calculator"></i> Total Amount (₹):</label>
+        <input type="text" id="total" readonly>
+      </div>
+
+      <button type="submit"><i class="fas fa-paper-plane"></i> Submit</button>
+    </form>
+  </div>
+
+  <script>
+    const quantityInput = document.getElementById('quantity');
+    const priceInput = document.getElementById('price');
+    const totalInput = document.getElementById('total');
+
+    function calculateTotal() {
+      const qty = parseFloat(quantityInput.value) || 0;
+      const price = parseFloat(priceInput.value) || 0;
+      totalInput.value = qty * price;
+    }
+
+    quantityInput.addEventListener('input', calculateTotal);
+    priceInput.addEventListener('input', calculateTotal);
+
+    document.getElementById('lightForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const formData = new FormData();
+      formData.append('customer', document.getElementById('customer').value);
+      formData.append('email', document.getElementById('email').value);
+      formData.append('lightType', document.getElementById('lightType').value);
+      formData.append('quantity', document.getElementById('quantity').value);
+      formData.append('price', document.getElementById('price').value);
+      formData.append('total', document.getElementById('total').value);
+
+      fetch('https://script.google.com/macros/s/AKfycbyve3nsAYCliZNZpVydATQlyS2G1MVHY5blHYJXzex-JUliJ3SvCaor2QJFTr1SeA-6/exec', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.text())
+      .then(data => {
+        if (data === 'Success') {
+          alert('✅ Data submitted successfully!');
+          document.getElementById('lightForm').reset();
+          document.getElementById('total').value = '';
+        } else {
+          alert('❌ Error submitting data: ' + data);
+        }
+      })
+      .catch(error => {
+        alert('❌ Fetch failed: ' + error.message);
+        console.error('Fetch error:', error);
+      });
+    });
+  </script>
+
+</body>
+</html>
